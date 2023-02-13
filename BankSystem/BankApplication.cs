@@ -1,15 +1,12 @@
 ﻿//Bank Application
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System; 
+using System.Linq; 
+using System.Text.RegularExpressions; 
 
 namespace BankSystem
 {
-    internal class BankApplication
+    public class BankApplication
     {
         public void UserDetails()
         {
@@ -42,90 +39,85 @@ namespace BankSystem
             }
 
             //accept gender in F or M
-            Console.Write("Gender(F/M) : ");
-            char gender = Console.ReadLine().ToUpper()[0];
-            if (gender != 'F' && gender != 'M')
+            Console.Write("Gender(F for Female/M for Male/O for Others) : ");
+            string gender = Console.ReadLine().ToUpper();
+            if (gender != "F" && gender != "M" && gender!="O")
             {
                 do
                 {
                     Console.Write("Invalid Gender! Please enter gender again: ");
-                    gender = Console.ReadLine().ToUpper()[0];
-                } while (gender != 'F' && gender != 'M');
+                    gender = Console.ReadLine().ToUpper();
+                } while (gender != "F" && gender != "M" && gender != "O");
             }
 
             //accept email
             Console.Write("Email : ");
             String email = Console.ReadLine();
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(email);
-            /*&& string.IsNullOrWhiteSpace(email)*/
+            Match match = regex.Match(email); 
+
             if (!match.Success)
             {
-                Console.WriteLine(email + " is inValid Email Address");
-                Console.Write("Please enter corrrect email : ");
-                email = Console.ReadLine();
+                do
+                {
+                    Console.WriteLine(email + " is inValid Email Address");
+                    Console.Write("Please enter corrrect email : ");
+                    email = Console.ReadLine();
+                    match = regex.Match(email);
+                } while (!match.Success);               
             }
 
             //accept phone number
             Console.Write("Phone Number : ");
-            long phoneNumber = long.Parse(Console.ReadLine());
-            long checkcount = phoneNumber.ToString().Length;
-            if (checkcount == 0 || checkcount < 10)
+            string phoneNumber = Console.ReadLine();
+            Regex r = new Regex(@"^[0-9]{10}$");
+            Match match1 = r.Match(phoneNumber);
+            if (!match1.Success)
             {
-                    Console.Write("Invalid phone number. Please enter phone number again: ");
-                    phoneNumber = long.Parse(Console.ReadLine());        
-            }
-
-            //marital status
-            Console.Write("Marital Status(Y/N) : ");
-            string maritalStatus = Console.ReadLine();
-
-            if ((maritalStatus != "Y" && maritalStatus != "N") && (maritalStatus != "y" && maritalStatus != "n"))
-            {
-                Console.Write("Invalid status! Please enter again: ");
-                maritalStatus = Console.ReadLine();
-
-                if (maritalStatus == "Y" || maritalStatus == "y")
+                do
                 {
-                    Console.Write("Spouse Name : ");
-                    string spouseName = Console.ReadLine();
-
-                    Console.Write("Do You Have Children(Y/N) : ");
-                    string children = Console.ReadLine();
-
-                    if (children == "Y")
+                    Console.Write("Invalid phone number. Please enter phone number again: ");
+                    phoneNumber = Console.ReadLine();
+                    match1 = r.Match(phoneNumber);
+                } while (!match1.Success);
+            }
+            
+            //marital status
+            Console.Write("Marital Status(Married/Unmarried) : ");
+            string maritalStatus = Console.ReadLine();
+          
+            if ((maritalStatus != "Married" && maritalStatus != "Unmarried") && (maritalStatus != "married" && maritalStatus != "unmarried"))
+            {
+                if ((maritalStatus != "Married" && maritalStatus != "Unmarried") && (maritalStatus != "married" && maritalStatus != "unmarried"))
+                {
+                    do
                     {
-                        Console.Write("Number Of Children : ");
-                        int totalchildren = Convert.ToInt32(Console.ReadLine());
-                        string[] childrenNames = new string[totalchildren];
-                        for (int i = 0; i < childrenNames.Count(); i++)
-                        {
-                            Console.Write("Enter {0} child name : ", i + 1);
-                            childrenNames[i] = Console.ReadLine();
-                        }
-                    }
+                        Console.Write("Invalid status! Please enter again: ");
+                        maritalStatus = Console.ReadLine();
+                    } while ((maritalStatus != "Married" && maritalStatus != "Unmarried") && (maritalStatus != "married" && maritalStatus != "unmarried"));
+                }
+                
+
+                if (maritalStatus == "Married" || maritalStatus == "married")
+                {
+                    MaritalStatusMethod();
                 }
             }
-            else
+            else 
             {
-                if (maritalStatus == "Y" || maritalStatus == "y")
+                if (maritalStatus == "Married" || maritalStatus == "married")
                 {
-                    Console.Write("Spouse Name : ");
-                    string spouseName = Console.ReadLine();
-
-                    Console.Write("Do You Have Children(Y/N) : ");
-                    string children = Console.ReadLine();
-
-                    if (children == "Y" || children == "y")
+                    MaritalStatusMethod();
+                }             
+                else
+                {
+                    if ((maritalStatus != "Married" && maritalStatus != "Unmarried") && (maritalStatus != "married" && maritalStatus != "unmarried"))
                     {
-                        Console.Write("Number Of Children : ");
-                        int totalchildren = Convert.ToInt32(Console.ReadLine());
-                        string[] childrenNames = new string[totalchildren];
-                        for (int i = 0; i < childrenNames.Count(); i++)
+                        do
                         {
-                            Console.Write("Enter {0} child name : ", i + 1);
-                            childrenNames[i] = Console.ReadLine();
-                        }
+                            Console.Write("Invalid status! Please enter again: ");
+                            maritalStatus = Console.ReadLine();
+                        } while ((maritalStatus != "Married" && maritalStatus != "Unmarried") && (maritalStatus != "married" && maritalStatus != "unmarried"));
                     }
                 }
             }
@@ -146,12 +138,16 @@ namespace BankSystem
 
             //pan number
             Console.Write("PAN Number : ");
-            long panNumber = long.Parse(Console.ReadLine());
-            long totaldigits = panNumber.ToString().Length;
-            if (totaldigits == 0 || totaldigits < 10)
+           
+            string panNumber = Console.ReadLine();
+            if (panNumber.Length == 10)
             {
-                Console.Write("Invalid pan number. Please enter pan number again: ");
-                panNumber = long.Parse(Console.ReadLine());
+                do
+                {
+                    Console.Write("Invalid pan number. Please enter pan number again: ");
+                    panNumber = Console.ReadLine();
+                } while (panNumber.Length == 10);
+                
             }
 
             //nominee
@@ -165,6 +161,7 @@ namespace BankSystem
                     nominee = Console.ReadLine();
                 } while (string.IsNullOrEmpty(nominee));
             }
+
             if (nominee == "Y" || nominee == "y")
             {
                 Console.Write("Nominee Name : ");
@@ -225,6 +222,7 @@ namespace BankSystem
                     Console.WriteLine("Sorry! You Have Low Income");
                 }
             }
+            
             Console.Write("Press Y To Exit : ");
             string finalexit = Console.ReadLine();
             if (finalexit == "Y" || finalexit == "y")
@@ -247,13 +245,34 @@ namespace BankSystem
                 Console.WriteLine("Communication Address : " + communicationAddress);
                 Random randomBankAccountNumber = new Random();
                 Console.WriteLine("Your Bank Account Number Is: " + randomBankAccountNumber.Next(10000000, 1000000000));
-                Console.WriteLine("--------------------------------------------------------------------------------------");
-                Console.ReadKey();
+                Console.WriteLine("---  -----------------------------------------------------------------------------------");
+                //Console.ReadKey();
             }
             else
             {
                 Console.Write("Press Y To Create Bank Account : ");
-                Console.ReadKey();
+               // Console.ReadKey();
+            }
+            
+        }
+        public void MaritalStatusMethod()
+        {
+            Console.Write("Spouse Name : ");
+            string spouseName = Console.ReadLine();
+
+            Console.Write("Do You Have Children(Y/N) : ");
+            string children = Console.ReadLine();
+
+            if (children == "Y" || children == "y")
+            {
+                Console.Write("Number Of Children : ");
+                int totalchildren = Convert.ToInt32(Console.ReadLine());
+                string[] childrenNames = new string[totalchildren];
+                for (int i = 0; i < childrenNames.Count(); i++)
+                {
+                    Console.Write("Enter {0} child name : ", i + 1);
+                    childrenNames[i] = Console.ReadLine();
+                }
             }
         }
     }
