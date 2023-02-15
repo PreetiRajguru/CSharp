@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F25DB5AE-56F8-4A65-A6CC-0C3FF3F4A5D4}</ProjectGuid>
+    <ProjectGuid>{0DEBFA05-E0DD-43D6-9A59-EB682B7D6908}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BankSystem</RootNamespace>
-    <AssemblyName>BankSystem</AssemblyName>
+    <RootNamespace>AccessSpecifierExample</RootNamespace>
+    <AssemblyName>AccessSpecifierExample</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,9 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankApplication.cs" />
-    <Compile Include="BankAccessSpecifier.cs" />
-    <Compile Include="MartialInfo.cs" />
+    <Compile Include="IncubXperts.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
