@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="BankApplication.cs" />
     <Compile Include="BankAccessSpecifier.cs" />
+    <Compile Include="MartialInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -53,7 +53,7 @@ namespace BankSystem
         //parent class protected method 
         internal void CheckBalance()
         {
-            Console.WriteLine("Total balance in your account is " + balance);
+            Console.WriteLine("Your Balance is " + balance);
         }
     }
 }
