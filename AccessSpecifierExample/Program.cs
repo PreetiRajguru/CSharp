@@ -15,6 +15,9 @@ namespace AccessSpecifierExample
             Console.WriteLine("------------------------------------------------------------------------------------------------------");
             Console.WriteLine(""); 
             IncubXperts accessSpecifierExample = new IncubXperts();
+            //accessing private member
+            accessSpecifierExample.Profit = 8000;
+            Console.WriteLine("Profit = "+accessSpecifierExample.Profit);
             //accessing public method
             accessSpecifierExample.Clients();
 

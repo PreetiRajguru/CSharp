@@ -5,13 +5,15 @@ namespace AccessSpecifierExample
     //public class 
     public class IncubXperts
     {
-        public IncubXperts()
-        {
-          
-        }
-
         // private , protected , public property
-        private double profit = 100000;
+        private int profit;
+        public int Profit
+        {
+            //get property
+            get { return profit;}
+            //set property
+            set { profit = value; } 
+        }
         protected int employees = 150;
         public int clients = 6;
 
@@ -43,7 +45,6 @@ namespace AccessSpecifierExample
             Console.Write("Interns are also a part of organization and add to the total count of ");
             //accessing protected property
             Console.WriteLine(employees);
-
         }
 
     }
