@@ -12,7 +12,7 @@ namespace StringManipulations
             Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
 
-            StringMethods stringFileObject1 = new StringMethods();
+            /*StringMethods stringFileObject1 = new StringMethods();
             stringFileObject1.StringMethodsUse();
 
             ReverseWords stringFileObject2 = new ReverseWords();
@@ -22,13 +22,13 @@ namespace StringManipulations
             sentenceObject.CountingSentence();
 
             CountSentencesLines lineObject = new CountSentencesLines();
-            lineObject.CountingLines();
+            lineObject.CountingLines();*/
 
             RemoveDuplicateChar nameObject = new RemoveDuplicateChar();
             nameObject.OnlyFirstOccurance();
 
-            LargestCommonPrefix longest = new LargestCommonPrefix();
-            longest.LongestCommonPrefix();
+            /*LargestCommonPrefix longest = new LargestCommonPrefix();
+            longest.LongestCommonPrefix();*/
 
             Console.ReadKey();
 

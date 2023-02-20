@@ -11,15 +11,21 @@ namespace StringManipluations
             string name = Console.ReadLine().ToLower();
 
             string newString = " ";
-            foreach(var ch in name)
+            string duplicates = " ";
+            foreach(char ch in name)
             {
                 if(!newString.Contains(ch))
                 {
                     newString = newString + ch;
                 }
+                else
+                {
+                    duplicates= duplicates + ch;
+                }
             }
 
             Console.WriteLine("Removing the duplicates in the string : {0}", newString);
+            Console.WriteLine("Duplicates in the string are : {0}", duplicates);
         }
     }
 }
