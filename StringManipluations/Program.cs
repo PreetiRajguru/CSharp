@@ -16,8 +16,8 @@ namespace StringManipulations
             Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
 
-            /* StringMethods stringFileObject1 = new StringMethods();
-             stringFileObject1.StringMethodsUse();*/
+            StringMethods stringFileObject1 = new StringMethods();
+            stringFileObject1.StringMethodsUse();
 
             /*ReverseWords stringFileObject2 = new ReverseWords();
             stringFileObject2.ReverseWordsInString();*/
@@ -31,8 +31,8 @@ namespace StringManipulations
             /*RemoveDuplicateChar nameObject = new RemoveDuplicateChar();
             nameObject.OnlyFirstOccurance();*/
 
-            LargestCommonPrefix longest = new LargestCommonPrefix();
-            longest.LongestCommonPrefix();
+            /*LargestCommonPrefix longest = new LargestCommonPrefix();
+            longest.LongestCommonPrefix();*/
 
             Console.ReadKey();
 
