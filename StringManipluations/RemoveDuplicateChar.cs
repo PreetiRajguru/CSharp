@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace StringManipluations
 {
-    internal class RemoveDuplicateChar
+    public class RemoveDuplicateChar
     {
         public void OnlyFirstOccurance()
         {
