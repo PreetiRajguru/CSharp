@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace BankSystem
 {
-    public class BankApplication
+    public class BankApplication : BankAccessSpecifier
     {
         public void UserDetails()
         {
@@ -116,7 +116,7 @@ namespace BankSystem
             }
 
             //pan number
-            Console.Write("PAN Number : ");
+            Console.Write("PAN Number (5 characters - 4 digits - 1 character) : ");
             string panNumber = Console.ReadLine();
             Regex re = new Regex("^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$");
             Match matchpan = re.Match(panNumber);
@@ -124,7 +124,7 @@ namespace BankSystem
             {
                 do
                 {
-                    Console.Write("Invalid pan number. Please enter pan number again: ");
+                    Console.Write("Invalid pan number. Please enter pan number again (5 characters - 4 digits - 1 character): ");
                     panNumber = Console.ReadLine();
                     matchpan = re.Match(panNumber);
                 } while (!matchpan.Success);
