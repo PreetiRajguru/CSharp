@@ -4,7 +4,7 @@ using System.Security.Policy;
 
 namespace BankSystem
 {
-    internal class Program
+    public class Program : BankAccessSpecifier
     {
         static void Main(string[] args)
         {
@@ -18,7 +18,7 @@ namespace BankSystem
             atmPin = int.Parse(Console.ReadLine());
 
 
-            if (atmPin == 1234)
+            if (atmPin.Equals(1234))
             {
                 do
                 {
@@ -58,6 +58,14 @@ namespace BankSystem
                                         if (amount >= 0)
                                         {
                                             user1.MoneyWithdraw(amount);
+                                            CountWithdraw += amount;
+                                            if (CountWithdraw > 50000)
+                                            {
+                                                user1.balance += amount;
+                                                CountWithdraw += amount;
+                                                throw new InvalidBalanceException();
+                                            }
+                                            user1.CheckBalance();
                                         }
                                         else
                                         {
@@ -68,6 +76,14 @@ namespace BankSystem
                                                 amount = double.Parse(Console.ReadLine());
                                             } while (amount < 0);
                                             user1.MoneyWithdraw(amount);
+                                            CountWithdraw += amount;
+                                            if (CountWithdraw > 50000)
+                                            {
+                                                user1.balance += amount;
+                                                CountWithdraw += amount;
+                                                throw new InvalidBalanceException();
+                                            }
+                                            user1.CheckBalance();
                                         }
                                         break;
                                     case "2":
@@ -96,6 +112,14 @@ namespace BankSystem
                                 if (amountDeposit >= 0)
                                 {
                                     user1.MoneyDeposit(amountDeposit);
+                                    CountDeposit += amountDeposit;
+                                    if (CountDeposit > 100000)
+                                    {
+                                        user1.balance -= amountDeposit;
+                                        CountDeposit -= amountDeposit;
+                                        throw new InvalidCapacityException();
+                                    }
+                                    user1.CheckBalance();
                                 }
                                 else
                                 {
@@ -106,6 +130,14 @@ namespace BankSystem
                                         amountDeposit = double.Parse(Console.ReadLine());
                                     } while (amountDeposit < 0);
                                     user1.MoneyDeposit(amountDeposit);
+                                    CountDeposit += amountDeposit;
+                                    if (CountDeposit > 100000)
+                                    {
+                                        user1.balance -= amountDeposit;
+                                        CountDeposit -= amountDeposit;
+                                        throw new InvalidCapacityException();
+                                    }
+                                    user1.CheckBalance();
                                 }
                             }
                             catch (InvalidCapacityException e)
@@ -116,7 +148,8 @@ namespace BankSystem
 
                         case 4:
                             Console.WriteLine("\n Thankyou for banking with us...");
-                            break;
+                            Console.ReadKey();
+                            return;
                     }
                 } while (true);
             }

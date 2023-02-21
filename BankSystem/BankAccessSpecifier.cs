@@ -28,7 +28,7 @@ namespace BankSystem
         {
             get
             {
-                return "Amount Too Large !";
+                return "Exceeded your limit !";
             }
         }
     }
@@ -36,6 +36,9 @@ namespace BankSystem
     //public class specifier
     public class BankAccessSpecifier
     {
+        public static double CountDeposit { get; set; }
+        public static double CountWithdraw { get; set; }
+
         //private , protected , public and internal access specifier for property
         public double balance;
         protected string userName = "Customer";
@@ -55,11 +58,14 @@ namespace BankSystem
             {
                 throw new InvalidCapacityException();
             }
+            else if (CountDeposit >= 100000)
+            {
+                throw new InvalidCapacityException();
+            }
             else
             {
                 balance += amount;
             }
-            Console.WriteLine("Your updated balance after deposit is " + balance);
             return balance;
         }
     }
@@ -69,7 +75,12 @@ namespace BankSystem
     {
         public double MoneyWithdraw(double amount)
         {
+
             if (amount > 50000)
+            {
+                throw new InvalidBalanceException();
+            }
+            else if (CountWithdraw > 50000)
             {
                 throw new InvalidBalanceException();
             }
@@ -81,7 +92,6 @@ namespace BankSystem
             {
                 balance -= amount;
             }
-            Console.WriteLine("Your updated balance after withdrawal is " + balance);
             return balance;
         }
 
