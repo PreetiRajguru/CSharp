@@ -26,159 +26,68 @@ namespace CompanyDistributor
                 Company company = new Company();
 
                 Console.Write("Enter {0} Company name : ", i);
-                company.companyName = Console.ReadLine().ToUpper();
+                company.CompanyName = Console.ReadLine().ToUpper();
 
-                if (string.IsNullOrEmpty(company.companyName.Trim()))
+                if (string.IsNullOrEmpty(company.CompanyName.Trim()))
                 {
                     do
                     {
                         Console.Write("Invalid Input. Please enter again : ");
-                        company.companyName = Console.ReadLine().ToUpper();
-                    } while (string.IsNullOrEmpty(company.companyName.Trim()));
+                        company.CompanyName = Console.ReadLine().ToUpper();
+                    } while (string.IsNullOrEmpty(company.CompanyName.Trim()));
                 }
 
-                if (companies.Exists(c => c.companyName == company.companyName))
+                if (companies.Exists(c => c.CompanyName == company.CompanyName))
                 {
                     Console.WriteLine("Company already exists.");
                     Console.Write("Please enter another name again : ");
-                    company.companyName = Console.ReadLine().ToUpper();
+                    company.CompanyName = Console.ReadLine().ToUpper();
 
-                    if (string.IsNullOrEmpty(company.companyName.Trim()))
+                    if (string.IsNullOrEmpty(company.CompanyName.Trim()))
                     {
                         do
                         {
                             Console.Write("Invalid Input. Please enter again : ");
-                            company.companyName = Console.ReadLine().ToUpper();
-                        } while (string.IsNullOrEmpty(company.companyName.Trim()));
+                            company.CompanyName = Console.ReadLine().ToUpper();
+                        } while (string.IsNullOrEmpty(company.CompanyName.Trim()));
                     }
                 }
 
-                Console.Write(company.companyName + " sells which model type ? (Bike / Car / Both) : ");
-                company.modelType = Console.ReadLine().ToUpper();
-                if (string.IsNullOrEmpty(company.modelType.Trim()))
+                Console.Write(company.CompanyName + " sells which model type ? (Bike / Car / Both) : ");
+                company.ModelType = Console.ReadLine().ToUpper();
+                if (string.IsNullOrEmpty(company.ModelType.Trim()))
                 {
                     do
                     {
                         Console.Write("Invalid Input. Please enter valid input : ");
-                        company.modelType = Console.ReadLine().ToUpper();
-                    } while (string.IsNullOrEmpty(company.modelType.Trim()));
+                        company.ModelType = Console.ReadLine().ToUpper();
+                    } while (string.IsNullOrEmpty(company.ModelType.Trim()));
                 }
-                if (company.modelType != "BIKE" && company.modelType != "CAR" && company.modelType != "BOTH")
+                if (company.ModelType != "BIKE" && company.ModelType != "CAR" && company.ModelType != "BOTH")
                 {
                     do
                     {
                         Console.Write("Invalid Input. Please enter valid input : ");
-                        company.modelType = Console.ReadLine().ToUpper(); ;
-                    } while (company.modelType != "BIKE" && company.modelType != "CAR" && company.modelType != "BOTH");
+                        company.ModelType = Console.ReadLine().ToUpper(); ;
+                    } while (company.ModelType != "BIKE" && company.ModelType != "CAR" && company.ModelType != "BOTH");
                 }
 
-                if (company.modelType == "BOTH")
+                if (company.ModelType == "BOTH")
                 {
                     Console.WriteLine("Enter vehicles information for Bike ..");
-                    Console.Write("Number of vehicles ? : ");
-                    int noOfVehicles;
-                    while (!int.TryParse(Console.ReadLine(), out noOfVehicles))
-                    {
-                        Console.Write("Please enter a valid numerical input : ");
-                    }
-                    for (int j = 1; j <= noOfVehicles; j++)
-                    {
-                        Vehicle vehicle = new Vehicle();
-                        Console.Write("Enter vehicle {0} name : ", j);
-                        vehicle.vehicleName = Console.ReadLine();
-                        if (string.IsNullOrEmpty(vehicle.vehicleName.Trim()))
-                        {
-                            do
-                            {
-                                Console.Write("Invalid Input. Please enter again : ");
-                                vehicle.vehicleName = Console.ReadLine();
-                            } while (string.IsNullOrEmpty(vehicle.vehicleName.Trim()));
-                        }
-                        
-                        Console.Write("Enter vehicle price (40,000 - 5,00,000) : ");
-                        double vp = vehicle.vehiclePrice;
-                        while (!double.TryParse(Console.ReadLine(), out vp) || (vp < 40000 || vp > 500000))
-                        {
-                            Console.Write("Please enter a valid numerical input : ");
-                        }
-                        vehicle.vehiclePrice = vp;
-                        //add vehicle to list
-                        vehicles.Add(vehicle);
-                        company.vehicles = vehicles;
-                    }
-
-                        Console.WriteLine("Enter vehicles information for Car ..");
-                        Console.Write("Number of vehicles ? : ");
-                        int noOfCars;
-                        while (!int.TryParse(Console.ReadLine(), out noOfCars))
-                        {
-                            Console.Write("Please enter a valid numerical input : ");
-                        }
-                        for (int k = 1; k <= noOfCars; k++)
-                        {
-                            Vehicle vehicle = new Vehicle();
-                            Console.Write("Enter vehicle {0} name : ", k);
-                            vehicle.vehicleName = Console.ReadLine();
-                            if (string.IsNullOrEmpty(vehicle.vehicleName.Trim()))
-                            {
-                                do
-                                {
-                                    Console.Write("Invalid Input. Please enter again : ");
-                                    vehicle.vehicleName = Console.ReadLine();
-                                } while (string.IsNullOrEmpty(vehicle.vehicleName.Trim()));
-                            }
-                        
-                            Console.Write("Enter vehicle price (40,000 - 5,00,000) : ");
-                            double cp = vehicle.vehiclePrice;
-                            while (!double.TryParse(Console.ReadLine(), out cp) || (cp < 40000 || cp > 500000))
-                            {
-                                Console.Write("Please enter a valid numerical input : ");
-                            }
-                            vehicle.vehiclePrice = cp;
-                            //add vehicle to list
-                            vehicles.Add(vehicle);
-                            company.vehicles = vehicles;
-                        }         
-                }
+                    AddVehicle(company, vehicles);
+                    Console.WriteLine("Enter vehicles information for Car ..");
+                    AddVehicle(company, vehicles);
+                }              
 
                 //vehicles info
-                if(company.modelType == "BIKE" || company.modelType == "CAR")
+                if(company.ModelType == "BIKE" || company.ModelType == "CAR")
                 {
-                    Console.Write("Number of vehicles ? : ");
-                    int noOfVehicles;
-                    while (!int.TryParse(Console.ReadLine(), out noOfVehicles))
-                    {
-                        Console.Write("Please enter a valid numerical input : ");
-                    }
-
-                    for (int j = 1; j <= noOfVehicles; j++)
-                    {
-                        Vehicle vehicle = new Vehicle();
-                        Console.Write("Enter vehicle {0} name : ", j);
-                        vehicle.vehicleName = Console.ReadLine();
-                        if (string.IsNullOrEmpty(vehicle.vehicleName.Trim()))
-                        {
-                            do
-                            {
-                                Console.Write("Invalid Input. Please enter again : ");
-                                vehicle.vehicleName = Console.ReadLine();
-                            } while (string.IsNullOrEmpty(vehicle.vehicleName.Trim()));
-                        }
-                        Console.Write("Enter vehicle price (40,000 - 5,00,000) : ");
-                        double vp = vehicle.vehiclePrice;
-                        while (!double.TryParse(Console.ReadLine(), out vp) || (vp < 40000 || vp > 500000))
-                        {
-                            Console.Write("Please enter a valid input : ");
-                        }
-                        vehicle.vehiclePrice = vp;
-                        //add vehicle to list
-                        vehicles.Add(vehicle);
-                        company.vehicles = vehicles;
-                    }
+                    AddVehicle(company,vehicles);                   
                 }
 
                 //distributors info
-                Console.Write("How many distributors for " + company.companyName + " company ? : ");
+                Console.Write("How many distributors for " + company.CompanyName + " company ? : ");
                 int noOfDistributors = 0;
                 while (!int.TryParse(Console.ReadLine(), out noOfDistributors))
                 {
@@ -189,28 +98,43 @@ namespace CompanyDistributor
                 {
                     Distributor distributor = new Distributor();
                     Console.Write("Enter {0} distributor name : ", k);
-                    distributor.distributorName = Console.ReadLine();
-                    if (string.IsNullOrEmpty(distributor.distributorName.Trim()))
+                    distributor.DistributorName = Console.ReadLine();
+                    if (string.IsNullOrEmpty(distributor.DistributorName.Trim()))
                     {
                         do
                         {
                             Console.Write("Invalid Input. Please enter again : ");
-                            distributor.distributorName = Console.ReadLine();
-                        } while (string.IsNullOrEmpty(distributor.distributorName.Trim()));
+                            distributor.DistributorName = Console.ReadLine();
+                        } while (string.IsNullOrEmpty(distributor.DistributorName.Trim()));
                     }
+                    if (distributors.Exists(d => d.DistributorName == distributor.DistributorName))
+                    {
+                        Console.WriteLine("Distributor already exists.");
+                        Console.Write("Please enter another name again : ");
+                        distributor.DistributorName = Console.ReadLine().ToUpper();
 
+                        if (string.IsNullOrEmpty(distributor.DistributorName.Trim()))
+                        {
+                            do
+                            {
+                                Console.Write("Invalid Input. Please enter again : ");
+                                distributor.DistributorName = Console.ReadLine().ToUpper();
+                            } while (string.IsNullOrEmpty(distributor.DistributorName.Trim()));
+                        }
+                    }
                     Console.Write("Enter distributor {0} commission % (10-30) : ", k);
-                    double dc = distributor.distributorCommission;
+                    double dc = distributor.DistributorCommission;
 
-                    dc = distributor.distributorCommission;
+                    dc = distributor.DistributorCommission;
                     while (!double.TryParse(Console.ReadLine(), out dc) || (dc < 10 || dc > 30))
                     {
                         Console.Write("Please enter a valid input : ");
                     }
-                    distributor.distributorCommission = dc;
+                    distributor.DistributorCommission = dc;
                     //add distributor to list
+                    distributor.CompanyName = company.CompanyName;
                     distributors.Add(distributor);
-                    company.distributors = distributors;
+                    company.Distributors = distributors;
                 }
                 //add company to list
                 companies.Add(company);
@@ -219,18 +143,19 @@ namespace CompanyDistributor
             //display company list with vehicle list and distributor list
             foreach (Company company in companies)
             {
+                Console.WriteLine("---------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine("");
-                Console.WriteLine("Company name : " + company.companyName);
-                Console.WriteLine("Model type : " + company.modelType);
-                foreach (var j in vehicles)
+                Console.WriteLine("Company name : " + company.CompanyName);
+                Console.WriteLine("Model type : " + company.ModelType);
+                foreach (Vehicle vehicle in vehicles.FindAll((vehicle) => vehicle.CompanyName.Equals(company.CompanyName)))
                 {
-                    Console.WriteLine("Vehicle name : " + j.vehicleName);
-                    Console.WriteLine("Vehicle price : " + j.vehiclePrice);
+                    Console.WriteLine("Vehicle name : " + vehicle.VehicleName);
+                    Console.WriteLine("Vehicle price : " + vehicle.VehiclePrice);
                 }
-                foreach (var k in distributors)
+                foreach (Distributor distributor in distributors.FindAll((distributor) => distributor.CompanyName.Equals(company.CompanyName)))
                 {
-                    Console.WriteLine("Distributor name : " + k.distributorName);
-                    Console.WriteLine("Distributor commission % : " + k.distributorCommission);
+                    Console.WriteLine("Distributor name : " + distributor.DistributorName);
+                    Console.WriteLine("Distributor commission % : " + distributor.DistributorCommission);
                 }
             }
 
@@ -253,17 +178,17 @@ namespace CompanyDistributor
             double commissionAmount = 0;
             foreach (Company company in companies)
             {
-                foreach (Vehicle vehicle in company.vehicles)
+                foreach (Vehicle vehicle in company.Vehicles.FindAll((vehicle) => vehicle.CompanyName.Equals(company.CompanyName)))
                 {
-                    if (vehicle.vehicleName == vehicleNameToFind)
+                    if (vehicle.VehicleName == vehicleNameToFind)
                     {
-                        foreach (Distributor distributor in company.distributors)
+                        foreach (Distributor distributor in company.Distributors.FindAll((distributor) => distributor.CompanyName.Equals(company.CompanyName)))                      
                         {
-                            if (distributor.distributorCommission < minCommission)
+                            if (distributor.DistributorCommission < minCommission)
                             {
-                                minCommission = distributor.distributorCommission;
+                                minCommission = distributor.DistributorCommission;
                                 minCommissionDistributor = distributor;
-                                commissionAmount = vehicle.vehiclePrice + (vehicle.vehiclePrice * distributor.distributorCommission / 100);
+                                commissionAmount = vehicle.VehiclePrice + (vehicle.VehiclePrice * distributor.DistributorCommission / 100);
                             }
                         }
                     }
@@ -273,7 +198,7 @@ namespace CompanyDistributor
             {
                 Console.WriteLine("Name of vehicle : " + vehicleNameToFind);
                 Console.WriteLine("Price of Vehicle with commission : " + commissionAmount);
-                Console.WriteLine("Minimum commission distributor : " + minCommissionDistributor.distributorName);
+                Console.WriteLine("Minimum commission distributor : " + minCommissionDistributor.DistributorName);
             }
             else
             {
@@ -281,5 +206,57 @@ namespace CompanyDistributor
             }
             Console.ReadKey();
         }
+        public static void AddVehicle(Company company,List<Vehicle> vehicles)
+        {
+            Console.Write("Number of vehicles ? : ");
+            int noOfVehicles;
+            while (!int.TryParse(Console.ReadLine(), out noOfVehicles))
+            {
+                Console.Write("Please enter a valid numerical input : ");
+            }
+
+            for (int j = 1; j <= noOfVehicles; j++)
+            {
+                Vehicle vehicle = new Vehicle();
+                Console.Write("Enter vehicle {0} name : ", j);
+                vehicle.VehicleName = Console.ReadLine();
+                if (string.IsNullOrEmpty(vehicle.VehicleName.Trim()))
+                {
+                    do
+                    {
+                        Console.Write("Invalid Input. Please enter again : ");
+                        vehicle.VehicleName = Console.ReadLine();
+                    } while (string.IsNullOrEmpty(vehicle.VehicleName.Trim()));
+                }
+                if (vehicles.Exists(v => v.VehicleName == vehicle.VehicleName))
+                {
+                    Console.WriteLine("Vehicle already exists.");
+                    Console.Write("Please enter another name again : ");
+                    vehicle.VehicleName = Console.ReadLine().ToUpper();
+
+                    if (string.IsNullOrEmpty(vehicle.VehicleName.Trim()))
+                    {
+                        do
+                        {
+                            Console.Write("Invalid Input. Please enter again : ");
+                            vehicle.VehicleName = Console.ReadLine().ToUpper();
+                        } while (string.IsNullOrEmpty(vehicle.VehicleName.Trim()));
+                    }
+                }
+                Console.Write("Enter vehicle price (40,000 - 5,00,000) : ");
+                double vp = vehicle.VehiclePrice;
+                while (!double.TryParse(Console.ReadLine(), out vp) || (vp < 40000 || vp > 500000))
+                {
+                    Console.Write("Please enter a valid input : ");
+                }
+                vehicle.VehiclePrice = vp;
+                //add vehicle to list
+
+                vehicle.CompanyName = company.CompanyName;
+                vehicles.Add(vehicle);
+                company.Vehicles = vehicles;
+            }
+        }
     }
+    
 }

@@ -4,9 +4,9 @@ namespace CompanyDistributor
 {
     public class Company
     {
-        public string companyName { get; set; }
-        public string modelType { get; set; }
-        public List<Vehicle> vehicles { get; set; }
-        public List<Distributor> distributors { get; set; }
+        public string CompanyName { get; set; }
+        public string ModelType { get; set; }
+        public List<Vehicle> Vehicles { get; set; }
+        public List<Distributor> Distributors { get; set; }
     }
 }
