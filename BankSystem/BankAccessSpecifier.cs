@@ -1,24 +1,40 @@
-﻿using System; 
+﻿using System;
 
 namespace BankSystem
 {
     public class InvalidBalanceException : Exception
     {
-      public InvalidBalanceException(String message) : base(message)
+        public override string Message
         {
-
+            get
+            {
+                return "Sorry ! You are exceeding your limit...";
+            }
+        }
+    }
+    public class InsufficientBalanceException : Exception
+    {
+        public override string Message
+        {
+            get
+            {
+                return "Sorry ! You dont have enough balance...";
+            }
         }
     }
     public class InvalidCapacityException : Exception
     {
-        public InvalidCapacityException(String message) : base(message)
+        public override string Message
         {
-
+            get
+            {
+                return "Amount Too Large !";
+            }
         }
     }
 
     //public class specifier
-    public class BankAccessSpecifier 
+    public class BankAccessSpecifier
     {
         //private , protected , public and internal access specifier for property
         public double balance;
@@ -35,11 +51,14 @@ namespace BankSystem
         //public access specifier for method
         public double MoneyDeposit(double amount)
         {
-            if(amount > 100000)
+            if (amount > 100000)
             {
-                throw new InvalidCapacityException("Amount too Large !");
+                throw new InvalidCapacityException();
             }
-            balance += amount;
+            else
+            {
+                balance += amount;
+            }
             Console.WriteLine("Your updated balance after deposit is " + balance);
             return balance;
         }
@@ -50,23 +69,18 @@ namespace BankSystem
     {
         public double MoneyWithdraw(double amount)
         {
-            if(amount > 50000)
+            if (amount > 50000)
             {
-                throw new InvalidBalanceException("Sorry, you dont have enough balance.");
+                throw new InvalidBalanceException();
+            }
+            else if (balance < amount)
+            {
+                throw new InsufficientBalanceException();
             }
             else
             {
                 balance -= amount;
             }
-
-            /*if (balance < amount)
-            {
-                throw new InvalidBalanceException("Sorry, you dont have enough balance.");
-            }
-            else
-            {
-                balance -= amount;
-            }*/
             Console.WriteLine("Your updated balance after withdrawal is " + balance);
             return balance;
         }

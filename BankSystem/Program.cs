@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Remoting.Services;
+using System.Security.Policy;
 
 namespace BankSystem
 {
@@ -12,7 +13,7 @@ namespace BankSystem
             user.UserDetails();*/
 
             AccessMembers user1 = new AccessMembers();
-            int option, atmPin;          
+            int option, atmPin;
             Console.Write("Enter Your ATM Pin (1234): ");
             atmPin = int.Parse(Console.ReadLine());
 
@@ -30,7 +31,7 @@ namespace BankSystem
                     Console.WriteLine("--------------------------------------------------------\n\n");
                     Console.Write("Select option: ");
                     option = int.Parse(Console.ReadLine());
-                    
+
                     switch (option)
                     {
                         case 1:
@@ -38,50 +39,81 @@ namespace BankSystem
                             break;
                         case 2:
                             try
-                            {                             
-                                Console.WriteLine("Enter \"continue\" to withdraw or enter \"Cancel\" to terminate : ");
+                            {
+                                Console.WriteLine("Enter \"1\" to withdraw or enter \"2\" to terminate : ");
                                 string inp = Console.ReadLine().ToUpper();
-                                if(inp != "CONTINUE" && inp != "CANCEL")
+                                if (inp != "1" && inp != "2")
                                 {
                                     do
                                     {
-                                        Console.Write("Enter Continue or Cancel :");
+                                        Console.Write("Enter 1 to withdraw or 2 to cancel :");
                                         inp = Console.ReadLine().ToUpper();
-                                    } while (inp != "CONTINUE" && inp != "CANCEL");
+                                    } while (inp != "1" && inp != "2");
                                 }
                                 switch (inp)
-                                {   
-                                    case "CONTINUE":
+                                {
+                                    case "1":
                                         Console.WriteLine("Enter amount to withdraw :");
                                         double amount = double.Parse(Console.ReadLine());
-                                        user1.MoneyWithdraw(amount); 
+                                        if (amount >= 0)
+                                        {
+                                            user1.MoneyWithdraw(amount);
+                                        }
+                                        else
+                                        {
+                                            do
+                                            {
+                                                Console.WriteLine("Cannot accept negative number ");
+                                                Console.WriteLine("Enter amount to withdraw again:");
+                                                amount = double.Parse(Console.ReadLine());
+                                            } while (amount < 0);
+                                            user1.MoneyWithdraw(amount);
+                                        }
                                         break;
-                                    case "CANCEL":
+                                    case "2":
                                         string cancel = Console.ReadLine().ToUpper();
-                                        if (cancel == "CANCEL")
+                                        if (cancel == "2")
                                         {
                                             break;
                                         }
-                                        break;                                   
+                                        break;
                                 }
                             }
-                            catch (InvalidBalanceException)
+                            catch (InvalidBalanceException b)
                             {
-                                Console.WriteLine("Sorry ! You are exceeding your limit...");
+                                Console.WriteLine($"Message: {b.Message}");
+                            }
+                            catch (InsufficientBalanceException a)
+                            {
+                                Console.WriteLine(a.Message);
                             }
                             break;
                         case 3:
-                            Console.WriteLine("Enter amount you want to add in your account :");
-                            double amountDeposit = double.Parse(Console.ReadLine());
                             try
                             {
-                                user1.MoneyDeposit(amountDeposit);
+                                Console.WriteLine("Enter amount you want to add in your account :");
+                                double amountDeposit = double.Parse(Console.ReadLine());
+                                if (amountDeposit >= 0)
+                                {
+                                    user1.MoneyDeposit(amountDeposit);
+                                }
+                                else
+                                {
+                                    do
+                                    {
+                                        Console.WriteLine("Cannot accept negative number ");
+                                        Console.WriteLine("Enter amount to deposit again:");
+                                        amountDeposit = double.Parse(Console.ReadLine());
+                                    } while (amountDeposit < 0);
+                                    user1.MoneyDeposit(amountDeposit);
+                                }
                             }
-                            catch (InvalidCapacityException)
+                            catch (InvalidCapacityException e)
                             {
-                                Console.WriteLine("Amount Too Large !");
+                                Console.WriteLine(e.Message);
                             }
                             break;
+
                         case 4:
                             Console.WriteLine("\n Thankyou for banking with us...");
                             break;
@@ -92,7 +124,7 @@ namespace BankSystem
             {
                 Console.WriteLine("Wrong input");
             }
-            Console.ReadKey(); 
+            Console.ReadKey();
         }
     }
 }
