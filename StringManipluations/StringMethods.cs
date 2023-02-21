@@ -20,11 +20,11 @@ namespace StringManipulations
 
 
             //length property and displaying using string interpolation
-            Console.WriteLine("Length of first string : {0}", firstString.Length);
+            Console.WriteLine($"Length of first string : {firstString.Length}");
 
             //concatenation method
             string fourthString = String.Concat(firstString, secondString);
-            Console.WriteLine("First string and second string concatenated : {0}", fourthString);
+            Console.WriteLine($"First string and second string concatenated : {fourthString}");
 
             //toUpper and toLower method
             string fifthString = firstString.ToUpper();

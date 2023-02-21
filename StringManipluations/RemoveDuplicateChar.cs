@@ -10,17 +10,17 @@ namespace StringManipluations
             Console.Write("Enter a string to remove duplicate characters and keep only the first occurance in the string : ");
             string name = Console.ReadLine().ToLower();
 
-            string newString = " ";
-            string duplicates = " ";
+            string newString = String.Empty;
+            string duplicates = String.Empty;
             foreach(char ch in name)
             {
                 if(!newString.Contains(ch))
                 {
-                    newString = newString + ch;
+                    newString += ch;
                 }
                 else
                 {
-                    duplicates= duplicates + ch;
+                    duplicates += ch;
                 }
             }
 

@@ -32,5 +32,11 @@ namespace StringManipluations
             }
             Console.WriteLine("Total number of lines in the paragraph are : {0}", linesCount);
         }
+
+        public void SpecialCharacterLength()
+        {
+            string example = "Hi \n";
+            Console.WriteLine(example.Length);
+        }
     }
 }

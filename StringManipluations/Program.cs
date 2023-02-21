@@ -12,20 +12,23 @@ namespace StringManipulations
             Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
             Console.WriteLine("");
 
-            /*StringMethods stringFileObject1 = new StringMethods();
-            stringFileObject1.StringMethodsUse();
+            /*StringMethods methodsObject = new StringMethods();
+            methodsObject.StringMethodsUse();*/
 
-            ReverseWords stringFileObject2 = new ReverseWords();
-            stringFileObject2.ReverseWordsInString();
+            ReverseWords reverseString = new ReverseWords();
+            reverseString.ReverseWordsInString();
+            reverseString.ReverseWordsLogic();
 
-            CountSentencesLines sentenceObject = new CountSentencesLines();
-            sentenceObject.CountingSentence();
+            /*CountSentencesLines sentenceObject = new CountSentencesLines();
+            sentenceObject.CountingSentence();*/
 
-            CountSentencesLines lineObject = new CountSentencesLines();
-            lineObject.CountingLines();*/
+            /*CountSentencesLines lineObject = new CountSentencesLines();
+            lineObject.CountingLines();
 
-            RemoveDuplicateChar nameObject = new RemoveDuplicateChar();
-            nameObject.OnlyFirstOccurance();
+            lineObject.SpecialCharacterLength();*/
+
+            /*    RemoveDuplicateChar nameObject = new RemoveDuplicateChar();
+                nameObject.OnlyFirstOccurance();*/
 
             /*LargestCommonPrefix longest = new LargestCommonPrefix();
             longest.LongestCommonPrefix();*/
