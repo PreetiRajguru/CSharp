@@ -98,13 +98,13 @@ namespace CompanyDistributor
                 {
                     Distributor distributor = new Distributor();
                     Console.Write("Enter {0} distributor name : ", k);
-                    distributor.DistributorName = Console.ReadLine();
+                    distributor.DistributorName = Console.ReadLine().ToUpper();
                     if (string.IsNullOrEmpty(distributor.DistributorName.Trim()))
                     {
                         do
                         {
                             Console.Write("Invalid Input. Please enter again : ");
-                            distributor.DistributorName = Console.ReadLine();
+                            distributor.DistributorName = Console.ReadLine().ToUpper();
                         } while (string.IsNullOrEmpty(distributor.DistributorName.Trim()));
                     }
                     if (distributors.Exists(d => d.DistributorName == distributor.DistributorName))
@@ -159,15 +159,16 @@ namespace CompanyDistributor
                 }
             }
 
-            //minimum commission           
+            //minimum commission
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("Enter vehicle name to find minimum commission distributor : ");
-            string vehicleNameToFind = Console.ReadLine();
+            string vehicleNameToFind = Console.ReadLine().ToUpper();
             if (string.IsNullOrEmpty(vehicleNameToFind.Trim()))
             {
                 do
                 {
                     Console.Write("Invalid Input. Please enter again : ");
-                    vehicleNameToFind = Console.ReadLine();
+                    vehicleNameToFind = Console.ReadLine().ToUpper();
                 } while (string.IsNullOrEmpty(vehicleNameToFind.Trim()));
             }
 
@@ -219,13 +220,13 @@ namespace CompanyDistributor
             {
                 Vehicle vehicle = new Vehicle();
                 Console.Write("Enter vehicle {0} name : ", j);
-                vehicle.VehicleName = Console.ReadLine();
+                vehicle.VehicleName = Console.ReadLine().ToUpper();
                 if (string.IsNullOrEmpty(vehicle.VehicleName.Trim()))
                 {
                     do
                     {
                         Console.Write("Invalid Input. Please enter again : ");
-                        vehicle.VehicleName = Console.ReadLine();
+                        vehicle.VehicleName = Console.ReadLine().ToUpper();
                     } while (string.IsNullOrEmpty(vehicle.VehicleName.Trim()));
                 }
                 if (vehicles.Exists(v => v.VehicleName == vehicle.VehicleName))
