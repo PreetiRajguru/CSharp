@@ -40,7 +40,7 @@ namespace BankSystem
         public static double CountWithdraw { get; set; }
 
         //private , protected , public and internal access specifier for property
-        public double balance;
+        public double balance = 10000;
         protected string userName = "Customer";
         //private int accountNumber = 1234567891;
         internal string location = "Pune";
@@ -58,7 +58,7 @@ namespace BankSystem
             {
                 throw new InvalidCapacityException();
             }
-            else if (CountDeposit >= 100000)
+            else if (CountDeposit > 100000)
             {
                 throw new InvalidCapacityException();
             }
