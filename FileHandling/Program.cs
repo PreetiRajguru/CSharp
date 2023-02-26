@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using ExcelLibrary.SpreadSheet;
 
 namespace FileHandling
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            ReadWrite readwrite = new ReadWrite();
-            readwrite.ReWrOperation();
+            FileUploadWrite operation = new FileUploadWrite();
+            operation.UploadWrite();
         }
     }
 }
