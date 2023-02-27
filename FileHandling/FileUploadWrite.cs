@@ -102,14 +102,11 @@ namespace FileHandling
             string extension = Path.GetExtension(selectedFilePath);
             if (extension == ".txt")
             {
+                StreamWriter sw = new StreamWriter(selectedFilePath);
                 Console.Write("Enter the data you want to write to the text file : ");
                 string data = Console.ReadLine();
-
-                Console.WriteLine("Writing into " + selectedFilePath);
-                using (StreamWriter writer = File.AppendText(selectedFilePath))
-                {
-                    writer.WriteLine(data);
-                }
+                sw.Write(data);
+                sw.Close();
                 Console.WriteLine("Data written to the file successfully.");
             }
             else if (extension == ".xls")
