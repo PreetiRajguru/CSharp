@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ExcelLibrary.SpreadSheet;
 
 namespace FileHandling
@@ -66,8 +67,13 @@ namespace FileHandling
                 try
                 {
                     //copying the source file contents to the destination file
-                    byte[] fileBytes = File.ReadAllBytes(sourceFilePath);
-                    File.WriteAllBytes(destinationFilePath, fileBytes);
+                    using (FileStream originalFileStream = File.OpenRead(sourceFilePath))
+                    {
+                        using (FileStream outputFileStream = File.OpenWrite(destinationFilePath))
+                        {
+                            originalFileStream.CopyTo(outputFileStream);
+                        }
+                    }
                     Console.WriteLine("Copied contents of " + sourceFilePath + " to " + destinationFilePath);
                     uploadedFileNames.Add(fileName);
                 }
@@ -78,64 +84,85 @@ namespace FileHandling
             }
 
             //displaying the list of uploaded file names with numbers
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("Uploaded Files Are : ");
             for (int i = 0; i < uploadedFileNames.Count; i++)
             {
                 Console.WriteLine(i + 1 + ") " + uploadedFileNames[i]);
             }
 
+            //displaying total files in the directory to select for writing
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("Files in the destination directory are : ");
+            List<string> list = new List<string>();
+            string[] fileArray = Directory.GetFiles(destinationFolder);
+            for (int i = 0; i < fileArray.Length; i++)
+            {
+                Console.WriteLine(i + 1 + ") " + Path.GetFileName(fileArray[i]));
+                list.Add(fileArray[i]);
+            }
+
             //accepting user input for selecting the number of file to write
             Console.Write("Enter the number of file to write to : ");
             int fileNumToWrite;
-            while (!int.TryParse(Console.ReadLine(), out fileNumToWrite) || (fileNumToWrite < 1 || fileNumToWrite > uploadedFileNames.Count))
+            while (!int.TryParse(Console.ReadLine(), out fileNumToWrite) || (fileNumToWrite < 1 || fileNumToWrite > list.Count))
             {
                 Console.Write("Please enter valid input : ");
             }
 
             //finding the file name in the list
-            string writeFileName = uploadedFileNames[fileNumToWrite - 1];
+            string writeFileName = list[fileNumToWrite - 1];
             string writeFilePath = Path.Combine(destinationFolder, writeFileName);
 
             //opening selected file for writing
             string selectedFilePath = writeFilePath;
-            string extension = Path.GetExtension(selectedFilePath);
-            if (extension == ".txt")
+            string extension = Path.GetExtension(writeFilePath);
+            switch (extension)
             {
-                StreamWriter sw = new StreamWriter(selectedFilePath);
-                Console.Write("Enter the data you want to write to the text file : ");
-                string data = Console.ReadLine();
-                sw.Write(data);
-                sw.Close();
-                Console.WriteLine("Data written to the file successfully.");
-            }
-            else if (extension == ".xls")
-            {
-                //creating a new excel workbook
-                Workbook workbook = new Workbook();
-                Worksheet worksheet = new Worksheet("Sheet 1");
-                workbook.Worksheets.Add(worksheet);
+                case ".txt":
+                    StreamWriter sw = new StreamWriter(selectedFilePath);
+                    Console.Write("Enter the data you want to write to the text file : ");
+                    string data = Console.ReadLine();
+                    sw.Write(data);
+                    sw.Close();
+                    Console.WriteLine("Data written to the file successfully.");
+                    break;
 
-                //writing data to cells in the worksheet
-                //worksheet.Cells[rowIndex,colIndex] = cellValue;
-                Console.WriteLine("Enter row index where you want to write :");
-                int rowindex = int.Parse(Console.ReadLine());
-                Console.WriteLine("Enter col index where you want to write :");
-                int colindex = int.Parse(Console.ReadLine());
-                Console.WriteLine("Enter data to fill in the cell : ");
-                string exldata = Console.ReadLine();
-                worksheet.Cells[rowindex, colindex] = new Cell(exldata);
-                Console.WriteLine("Data written successfully.");
+                case ".xls":
+                    //creating a new excel workbook
+                    Workbook workbook = new Workbook();
+                    Worksheet worksheet = new Worksheet("Sheet 1");
+                    workbook.Worksheets.Add(worksheet);
 
-                //saving the workbook to the file
-                workbook.Save(selectedFilePath);
-            }
-            else if (extension == ".jpg" || extension == ".png")
-            {
-                Console.WriteLine($"Cannot write into {selectedFilePath}.");
-            }
-            else
-            {
-                Console.WriteLine($"Cannot write into {selectedFilePath}.");
+                    //writing data to cells in the worksheet
+                    //worksheet.Cells[rowIndex,colIndex] = cellValue;
+                    Console.WriteLine("Enter row index where you want to write :");
+                    int rowindex = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Enter col index where you want to write :");
+                    int colindex = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Enter data to fill in the cell : ");
+                    string exldata = Console.ReadLine();
+
+                    worksheet.Cells[rowindex, colindex] = new Cell(exldata);
+                    Console.WriteLine("Data written successfully.");
+
+                    //saving the workbook to the file
+                    workbook.Save(selectedFilePath);
+                    break;
+
+                case ".jpg":
+                    Console.WriteLine($"Cannot write into {selectedFilePath}.");
+                    break;
+
+                case ".png":
+                    Console.WriteLine($"Cannot write into {selectedFilePath}.");
+                    break;
+
+                default:
+                    Console.WriteLine($"Cannot write into {selectedFilePath}.");
+                    break;
             }
             Console.ReadKey();
         }
