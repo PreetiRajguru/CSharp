@@ -59,7 +59,7 @@ namespace FileHandling
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Something went wrong while craeting the file at " + destinationFilePath + e.Message);
+                        Console.WriteLine("Something went wrong while creating the file at " + destinationFilePath + e.Message);
                         continue;
                     }
                 }
@@ -82,7 +82,6 @@ namespace FileHandling
             for (int i = 0; i < uploadedFileNames.Count; i++)
             {
                 Console.WriteLine(i + 1 + ") " + uploadedFileNames[i]);
-                //Console.WriteLine($"{i + 1}. {uploadedFileNames[i]}");
             }
 
             //accepting user input for selecting the number of file to write
