@@ -12,15 +12,9 @@ namespace FileManipulations
         {
             //accept directory path
             string selectedFolder = string.Empty;
-            try
-            {
-                Console.Write("Enter the directory path : ");
-                selectedFolder = Console.ReadLine();
-            }
-            catch (DirectoryNotFoundException e)
-            {
-                Console.WriteLine("Directory not found: " + e.Message);
-            }
+            Console.Write("Enter the directory path : ");
+            selectedFolder = Console.ReadLine();
+
             while (!(Path.IsPathRooted(selectedFolder)))
             {
                 Console.WriteLine("Invalid file path.");
@@ -31,14 +25,21 @@ namespace FileManipulations
             //displaying total files in the directory to select for writing
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("Files in the directory are : ");
-            List<string> list = new List<string>();
-            string[] fileArray = Directory.GetFiles(selectedFolder);
-            for (int i = 0; i < fileArray.Length; i++)
-            {
-                Console.WriteLine(i + 1 + ") " + Path.GetFileName(fileArray[i]));
-                list.Add(fileArray[i]);
-            }
 
+            List<string> list = new List<string>();
+            try
+            {
+                string[] fileArray = Directory.GetFiles(selectedFolder);
+                for (int i = 0; i < fileArray.Length; i++)
+                {
+                    Console.WriteLine(i + 1 + ") " + Path.GetFileName(fileArray[i]));
+                    list.Add(fileArray[i]);
+                }
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Console.WriteLine("Directory not found: " + e.Message);
+            }
             //accepting user input for selecting the number of file to read
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
             Console.Write("Which file do you wish to read? ");
@@ -51,14 +52,10 @@ namespace FileManipulations
             //finding the file name in the list
             string readFileName = string.Empty;
             string readFilePath = string.Empty;
-            
-            
-                readFileName = list[fileNumToRead - 1];
-                readFilePath = Path.Combine(selectedFolder, readFileName);
-            
-            
 
-            //opening selected file for read
+            readFileName = list[fileNumToRead - 1];
+            readFilePath = Path.Combine(selectedFolder, readFileName);
+
             string selectedFilePath = readFilePath;
             string extension = Path.GetExtension(readFilePath);
 
@@ -68,7 +65,7 @@ namespace FileManipulations
                 {
                     //read all text in selected file
                     Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
-                    
+
                     string text;
 
                     var fileStream = new FileStream(selectedFilePath, FileMode.Open, FileAccess.Read);
@@ -112,11 +109,11 @@ namespace FileManipulations
                 {
                     Console.WriteLine("Unauthorized access to file : " + except.Message);
                 }
-                //creating file with user name and locn as input
+                //creating file with user defined name and locn as input
                 Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine("Enter Location where you want to create file : ");
                 string locn = Console.ReadLine();
-                Console.WriteLine("file name for new file with \\ and extension : ");
+                Console.WriteLine("Enter file name for new file with \\ and extension : ");
                 string name = Console.ReadLine();
                 string newFileName = String.Concat(locn, name);
 
