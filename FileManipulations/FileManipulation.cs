@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace FileManipulations
@@ -11,7 +12,7 @@ namespace FileManipulations
         public void FileOperations()
         {
             //accept directory path
-            string selectedFolder = string.Empty;
+            string selectedFolder;
             Console.Write("Enter the directory path : ");
             selectedFolder = Console.ReadLine();
 
@@ -25,37 +26,35 @@ namespace FileManipulations
             //displaying total files in the directory to select for writing
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("Files in the directory are : ");
-
-            List<string> list = new List<string>();
+            List<string> filesList = new List<string>();
             try
             {
                 string[] fileArray = Directory.GetFiles(selectedFolder);
                 for (int i = 0; i < fileArray.Length; i++)
                 {
                     Console.WriteLine(i + 1 + ") " + Path.GetFileName(fileArray[i]));
-                    list.Add(fileArray[i]);
+                    filesList.Add(fileArray[i]);
                 }
             }
-            catch (DirectoryNotFoundException e)
+            catch (DirectoryNotFoundException)
             {
-                Console.WriteLine("Directory not found: " + e.Message);
+                Console.WriteLine("Directory not found...");
             }
+
             //accepting user input for selecting the number of file to read
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
-            Console.Write("Which file do you wish to read? ");
+            Console.Write("Enter the number of file that you wish to read : ");
             int fileNumToRead;
-            while (!int.TryParse(Console.ReadLine(), out fileNumToRead) || (fileNumToRead < 1 || fileNumToRead > list.Count))
+            while (!int.TryParse(Console.ReadLine(), out fileNumToRead) || (fileNumToRead < 1 || fileNumToRead > filesList.Count))
             {
                 Console.Write("Please enter valid input : ");
             }
 
             //finding the file name in the list
-            string readFileName = string.Empty;
-            string readFilePath = string.Empty;
-
-            readFileName = list[fileNumToRead - 1];
+            string readFileName;
+            string readFilePath;
+            readFileName = filesList[fileNumToRead - 1];
             readFilePath = Path.Combine(selectedFolder, readFileName);
-
             string selectedFilePath = readFilePath;
             string extension = Path.GetExtension(readFilePath);
 
@@ -67,8 +66,11 @@ namespace FileManipulations
                     Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
 
                     string text;
-
                     var fileStream = new FileStream(selectedFilePath, FileMode.Open, FileAccess.Read);
+                    if (!File.Exists(selectedFilePath))
+                    {
+                        throw new FileNotFoundException();
+                    }
                     using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                     {
                         Console.WriteLine($"The data inside {Path.GetFileName(selectedFilePath)} is : ");
@@ -79,65 +81,97 @@ namespace FileManipulations
 
                     //replacing word in file
                     Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine("Enter string to replace : ");
+                    Console.WriteLine("Enter word to replace : ");
                     string searchString = Console.ReadLine();
-                    Console.WriteLine("Enter replacement string : ");
-                    string replacementString = Console.ReadLine();
+                    string replacementString = String.Empty;
 
-                    string text2 = File.ReadAllText(selectedFilePath);
-                    text2 = text2.Replace(searchString, replacementString);
-                    File.WriteAllText(selectedFilePath, text2);
-                    string text1 = File.ReadAllText(selectedFilePath);
-                    Console.WriteLine("The file contents after word replacement are : ");
-                    Console.WriteLine(text1);
+
+                    if(!text.Contains(searchString))
+                    {
+                        Console.WriteLine("Word not found.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter replacement string : ");
+                        replacementString = Console.ReadLine();
+                        string data = File.ReadAllText(selectedFilePath);
+                        data = data.Replace(searchString, replacementString);
+                        File.WriteAllText(selectedFilePath, data);
+                        string newData = File.ReadAllText(selectedFilePath);
+                        Console.WriteLine("The file contents after word replacement are : ");
+                        Console.WriteLine(newData);
+                    }
 
                     //reading last line of selected file
                     Console.WriteLine();
-                    Console.Write("Last Line is : ");
-                    var last = File.ReadLines(selectedFilePath).Last();
-                    Console.WriteLine(last);
+                    string lastLine = File.ReadLines(selectedFilePath).Last();
 
                     //displaying last line with name file
-                    Console.WriteLine($"The last line in {Path.GetFileName(selectedFilePath)} is {last}");
+                    Console.WriteLine($"The last line in {Path.GetFileName(selectedFilePath)} is {lastLine}");
                     fileStream.Close();
                 }
-                catch (FileNotFoundException ex)
+                catch (FileNotFoundException)
                 {
-                    Console.WriteLine("File not found: " + ex.Message);
+                    Console.WriteLine("File not found... ");
                 }
-                catch (UnauthorizedAccessException except)
+                catch (UnauthorizedAccessException)
                 {
-                    Console.WriteLine("Unauthorized access to file : " + except.Message);
+                    Console.WriteLine("Unauthorized access to file...");
                 }
+
                 //creating file with user defined name and locn as input
                 Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine("Enter Location where you want to create file : ");
-                string locn = Console.ReadLine();
-                Console.WriteLine("Enter file name for new file with \\ and extension : ");
-                string name = Console.ReadLine();
-                string newFileName = String.Concat(locn, name);
+                string fileLocation = Console.ReadLine();
 
-                FileStream fileStream1 = new FileStream(newFileName, FileMode.Create);
-                fileStream1.Close();
+                if (!(Directory.Exists(fileLocation)))
+                {
+                    Directory.CreateDirectory(fileLocation);
+                    Console.WriteLine("Destination Folder Created" + fileLocation);
+                }
+
+                Console.WriteLine("Enter name for file : ");
+                string fileName = Console.ReadLine();
+                
+               string filePathCreated =  CreatingFilePath(fileLocation,fileName);
+                while (File.Exists(filePathCreated))
+                {
+                    Console.Write("File with this name already exists.");
+                    Console.Write("Enter new file name :");
+                    fileName = Console.ReadLine();
+                    CreatingFilePath(fileLocation, fileName);              
+                }
+                using (StreamWriter sw = File.CreateText(filePathCreated))
+                {
+                    Console.WriteLine("File created successfully!");
+                }
+
+                FileStream newFile = new FileStream(filePathCreated, FileMode.Create);
+                newFile.Close();
+
                 //copying the source file contents to the destination file
                 using (FileStream originalFileStream = File.OpenRead(selectedFilePath))
                 {
-                    using (FileStream outputFileStream = File.OpenWrite(newFileName))
+                    using (FileStream outputFileStream = File.OpenWrite(filePathCreated))
                     {
                         originalFileStream.CopyTo(outputFileStream);
                     }
                 }
-                Console.WriteLine($"File has been created and the Path is {locn}");
-                Console.WriteLine("Copied contents of " + Path.GetFileName(selectedFilePath) + " to " + Path.GetFileName(newFileName));
-
-                fileStream1.Close();
+                Console.WriteLine($"File has been created and the Path is {fileLocation}");
+                Console.WriteLine("Copied contents of " + Path.GetFileName(selectedFilePath) + " to " + Path.GetFileName(filePathCreated));
+                newFile.Close();
 
                 Console.ReadKey();
             }
             else
             {
                 Console.WriteLine($"Cannot read {Path.GetFileName(selectedFilePath)}");
+                Console.ReadKey();
             }
+        }
+        string CreatingFilePath(string fileLocation,string fileName)
+        {
+          return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileLocation, fileName);
         }
     }
 }

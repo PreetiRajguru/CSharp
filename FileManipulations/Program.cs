@@ -10,8 +10,8 @@ namespace FileManipulations
     {
         static void Main(string[] args)
         {
-            FileManipulation manipulation= new FileManipulation();
-            manipulation.FileOperations();
+            FileManipulation manipulator= new FileManipulation();
+            manipulator.FileOperations();
         }
     }
 }
