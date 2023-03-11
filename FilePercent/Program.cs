@@ -8,6 +8,7 @@ namespace FileUploader
 {
     class Program
     {
+        delegate void PercentCalculator(long receivedBytes, long fileSize);
         static async Task Main()
         {
             //accepting source file to upload
@@ -66,7 +67,7 @@ namespace FileUploader
             Console.ReadKey();
         }
 
-        static async Task FileUpload(string sourceFilePath, string destinationFilePath, Action<long, long> percentCalculator)
+        static async Task FileUpload(string sourceFilePath, string destinationFilePath, PercentCalculator percent)
         {
             using (FileStream sourceFileUpload = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
             {
@@ -84,7 +85,8 @@ namespace FileUploader
                         //writing file in blocks of 4 KB
                         await destinationFileUpload.WriteAsync(buffer, 0, transmittedBytes);
                         receivedBytes += transmittedBytes;
-                        percentCalculator(receivedBytes, fileSize);
+                        //percentCalculator(receivedBytes, fileSize);
+                        percent(receivedBytes, fileSize);
                     }
                 }
             }
