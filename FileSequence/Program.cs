@@ -29,7 +29,7 @@ namespace FileUploader
             //accepting the source file paths of files to upload
             Console.WriteLine("Enter the source file paths to upload (seperated by commas) : ");
             string inputPaths = Console.ReadLine();
-            while (!(Path.IsPathRooted(inputPaths) || File.Exists(inputPaths)))
+            while (!Path.IsPathRooted(inputPaths))
             {
                 Console.WriteLine("Invalid file path. Either Source does not exist.");
                 Console.Write("Please enter again : ");
@@ -38,13 +38,13 @@ namespace FileUploader
 
             string[] sourceFilePaths = inputPaths.Split(',');
 
-            string deleteFile = string.Empty;
-            foreach (string fileNotFound in sourceFilePaths)
+            List<string> deleteFiles = new List<string>();
+            foreach (string invalidFile in sourceFilePaths)
             {
-                if (!File.Exists(fileNotFound))
+                if (!File.Exists(invalidFile))
                 {
-                    Console.WriteLine($"{fileNotFound} File Does Not Exist");
-                    deleteFile = fileNotFound;
+                    Console.WriteLine($"{invalidFile} File Does Not Exist");
+                    deleteFiles.Add(invalidFile);
                 }
             }
 
@@ -53,8 +53,8 @@ namespace FileUploader
             foreach (string filePath in sourceFilePaths)
             {
                 allFiles.Add(filePath);
-                allFiles.Remove(deleteFile);
             }
+            allFiles.RemoveAll(x => deleteFiles.Contains(x));
 
             //creating tasks to upload each file asynchronously
             List<Task> taskList = new List<Task>();
@@ -80,10 +80,10 @@ namespace FileUploader
             //opening the file for reading
             using (FileStream sourceFile = new FileStream(filePath, FileMode.Open))
             {
-                // Create a new file in the destination directory
+                //creating a new file in the destination directory
                 using (FileStream destinationFile = new FileStream(filePathCreate, FileMode.Create))
                 {
-                    // Upload the file asynchronously
+                    //uploading the file asynchronously
                     await sourceFile.CopyToAsync(destinationFile);
                 }
             }

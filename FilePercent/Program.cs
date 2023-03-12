@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FileUploader
@@ -66,27 +65,31 @@ namespace FileUploader
             Console.WriteLine($"File Uploading Completed in {stopwatch.Elapsed.TotalSeconds:F2} Seconds.");
             Console.ReadKey();
         }
-
         static async Task FileUpload(string sourceFilePath, string destinationFilePath, PercentCalculator percent)
         {
-            using (FileStream sourceFileUpload = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
+            using (FileStream sourceFileStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
             {
-                using (FileStream destinationFileUpload = new FileStream(destinationFilePath, FileMode.CreateNew, FileAccess.Write))
+                using (MemoryStream destinationMemoryStream = new MemoryStream())
                 {
                     long receivedBytes = 0;
-                    long fileSize = sourceFileUpload.Length;
+                    long fileSize = sourceFileStream.Length;
                     //specified buffer size 4 KB = 4096 bytes
                     byte[] buffer = new byte[4096];
                     int transmittedBytes;
 
                     //reading file in blocks of 4 KB
-                    while ((transmittedBytes = await sourceFileUpload.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    while ((transmittedBytes = await sourceFileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
-                        //writing file in blocks of 4 KB
-                        await destinationFileUpload.WriteAsync(buffer, 0, transmittedBytes);
+                        //writing file in blocks of 4 KB to memory stream
+                        await destinationMemoryStream.WriteAsync(buffer, 0, transmittedBytes);
                         receivedBytes += transmittedBytes;
-                        //percentCalculator(receivedBytes, fileSize);
                         percent(receivedBytes, fileSize);
+                    }
+
+                    //writing memory stream to destination file
+                    using (FileStream destinationFileStream = new FileStream(destinationFilePath, FileMode.CreateNew, FileAccess.Write))
+                    {
+                        await destinationMemoryStream.CopyToAsync(destinationFileStream);
                     }
                 }
             }
