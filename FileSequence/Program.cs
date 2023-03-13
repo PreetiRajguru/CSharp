@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using static FileSequence.Constants;
 
 namespace FileUploader
 {
@@ -10,12 +11,12 @@ namespace FileUploader
         static async Task Main()
         {
             //accepting destination folder path
-            Console.Write("Enter the destination folder path : ");
+            Console.Write(destinationInput);
             string destinationFolder = Console.ReadLine();
 
             while (!(Path.IsPathRooted(destinationFolder)))
             {
-                Console.Write("Invalid file path.Please enter again : ");
+                Console.Write(invalidPath);
                 destinationFolder = Console.ReadLine();
             }
 
@@ -23,16 +24,15 @@ namespace FileUploader
             if (!Directory.Exists(destinationFolder))
             {
                 Directory.CreateDirectory(destinationFolder);
-                Console.WriteLine("Destination Folder Created" + destinationFolder);
+                Console.WriteLine(folderCreated + destinationFolder);
             }
 
             //accepting the source file paths of files to upload
-            Console.WriteLine("Enter the source file paths to upload (seperated by commas) : ");
+            Console.WriteLine(sourceInputPaths);
             string inputPaths = Console.ReadLine();
             while (!Path.IsPathRooted(inputPaths))
             {
-                Console.WriteLine("Invalid file path. Either Source does not exist.");
-                Console.Write("Please enter again : ");
+                Console.WriteLine(invalidPath);
                 inputPaths = Console.ReadLine();
             }
 
@@ -43,7 +43,7 @@ namespace FileUploader
             {
                 if (!File.Exists(invalidFile))
                 {
-                    Console.WriteLine($"{invalidFile} File Does Not Exist");
+                    Console.WriteLine(sourceNotExist);
                     deleteFiles.Add(invalidFile);
                 }
             }
@@ -62,13 +62,13 @@ namespace FileUploader
             {
                 taskList.Add(FileUploadLogic(file, destinationFolder));
             }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Uploaded Files Sequence : ");
+            Console.WriteLine(partitionString);
+            Console.WriteLine(fileUploadSequence);
 
             //waiting for all tasks in list to complete executing method
             await Task.WhenAll(taskList);
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("All files uploaded successfully.");
+            Console.WriteLine(partitionString);
+            Console.WriteLine(allFilesUploaded);
             Console.ReadKey();
         }
 

@@ -2,30 +2,31 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using static FilePercent.ConstantMessages;
 
 namespace FileUploader
 {
-    class Program
+    class Program 
     {
         delegate void PercentCalculator(long receivedBytes, long fileSize);
         static async Task Main()
         {
             //accepting source file to upload
-            Console.Write("Enter the source file path to upload : ");
+            Console.Write(sourceInput);
             string sourceFilePath = Console.ReadLine();
             while (!File.Exists(sourceFilePath))
             {
-                Console.Write("Source file does not exist. Please enter again : ");
+                Console.Write(sourceNotExist);
                 sourceFilePath = Console.ReadLine();
             }
 
             //accepting destination folder path
-            Console.Write("Enter the destination folder path : ");
+            Console.Write(destinationInput);
             string destinationFolder = Console.ReadLine();
 
             while (!(Path.IsPathRooted(destinationFolder)))
             {
-                Console.Write("Invalid file path.Please enter again : ");
+                Console.Write(invalidPath);
                 destinationFolder = Console.ReadLine();
             }
 
@@ -33,7 +34,7 @@ namespace FileUploader
             if (!Directory.Exists(destinationFolder))
             {
                 Directory.CreateDirectory(destinationFolder);
-                Console.WriteLine("Destination Folder Created" + destinationFolder);
+                Console.WriteLine(folderCreated + destinationFolder);
             }
 
             //creating fileinfo object of source file
@@ -44,7 +45,7 @@ namespace FileUploader
 
             if (File.Exists(destinationFilePath))
             {
-                Console.WriteLine("Destination file already exists.");
+                Console.WriteLine(fileExists);
                 Console.ReadKey();
                 return;
             }
@@ -61,7 +62,7 @@ namespace FileUploader
 
             //displaying total elapsed time
             stopwatch.Stop();
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine(partitionString);
             Console.WriteLine($"File Uploading Completed in {stopwatch.Elapsed.TotalSeconds:F2} Seconds.");
             Console.ReadKey();
         }
